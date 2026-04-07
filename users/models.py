@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
+from .enums import Role
 
 
 class UserManager(BaseUserManager):
@@ -21,11 +22,13 @@ class UserManager(BaseUserManager):
         return self.create_user(username, name, password, **extra_fields)
 
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=50, blank=True, null=True)
     username = models.CharField(max_length=50, unique=True)
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.USER)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

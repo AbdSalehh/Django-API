@@ -14,6 +14,7 @@ from .models import User, BlacklistedToken
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     @extend_schema(
         summary='Register new user',
@@ -66,6 +67,7 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     @extend_schema(
         summary='User login',
@@ -116,8 +118,8 @@ class LoginView(APIView):
                 message='Username atau password salah.',
             )
 
-        access_token = generate_access_token(str(user.id))
-        refresh_token = generate_refresh_token(str(user.id))
+        access_token = generate_access_token(user)
+        refresh_token = generate_refresh_token(user)
 
         return api_response(
             success=True,
@@ -132,6 +134,7 @@ class LoginView(APIView):
 
 class RefreshTokenView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     @extend_schema(
         summary='Refresh access token',
@@ -206,7 +209,7 @@ class RefreshTokenView(APIView):
                 message='User tidak ditemukan.',
             )
 
-        new_access_token = generate_access_token(str(user.id))
+        new_access_token = generate_access_token(user)
 
         return api_response(
             success=True,
