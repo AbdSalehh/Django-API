@@ -82,14 +82,6 @@ class LoginView(APIView):
                             'statusCode': 200,
                             'message': 'Login berhasil.',
                             'data': {
-                                'user': {
-                                    'id': '123e4567-e89b-12d3-a456-426614174000',
-                                    'name': 'John Doe',
-                                    'nickname': 'Johnny',
-                                    'username': 'johndoe',
-                                    'created_at': '2026-04-05T14:36:00Z',
-                                    'updated_at': '2026-04-05T14:36:00Z'
-                                },
                                 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
                                 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
                             }
@@ -132,7 +124,6 @@ class LoginView(APIView):
             status_code=status.HTTP_200_OK,
             message='Login berhasil.',
             data={
-                'user': UserSerializer(user).data,
                 'access_token': access_token,
                 'refresh_token': refresh_token,
             },
@@ -144,7 +135,7 @@ class RefreshTokenView(APIView):
 
     @extend_schema(
         summary='Refresh access token',
-        description='Generate new access and refresh tokens using a valid refresh token',
+        description='Generate a new access token using a valid refresh token. The refresh token remains unchanged.',
         request={
             'application/json': {
                 'type': 'object',
@@ -165,8 +156,7 @@ class RefreshTokenView(APIView):
                             'statusCode': 200,
                             'message': 'Token berhasil diperbarui.',
                             'data': {
-                                'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-                                'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                                'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
                             }
                         }
                     )
@@ -217,7 +207,6 @@ class RefreshTokenView(APIView):
             )
 
         new_access_token = generate_access_token(str(user.id))
-        new_refresh_token = generate_refresh_token(str(user.id))
 
         return api_response(
             success=True,
@@ -225,7 +214,6 @@ class RefreshTokenView(APIView):
             message='Token berhasil diperbarui.',
             data={
                 'access_token': new_access_token,
-                'refresh_token': new_refresh_token,
             },
         )
 
