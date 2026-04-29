@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'core.apps.CoreConfig',
     'users',
+    'ai.apps.AiConfig',
 ]
 
 MIDDLEWARE = [
@@ -140,5 +141,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', SECRET_KEY)
-ACCESS_TOKEN_EXPIRY = int(os.getenv('ACCESS_TOKEN_EXPIRY', '60'))  # 1 minute
-REFRESH_TOKEN_EXPIRY = int(os.getenv('REFRESH_TOKEN_EXPIRY', '120'))  # 2 minutes
+ACCESS_TOKEN_EXPIRY = int(os.getenv('ACCESS_TOKEN_EXPIRY', '10800'))  # 1 minute
+REFRESH_TOKEN_EXPIRY = int(os.getenv('REFRESH_TOKEN_EXPIRY', '604800'))  # 7 days
+
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+OPENROUTER_DEFAULT_MODEL = os.getenv('OPENROUTER_DEFAULT_MODEL', 'openai/gpt-oss-120b:free')
